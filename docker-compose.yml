@@ -33,7 +33,7 @@ services:
     volumes:
       - certbot-certs:/etc/letsencrypt
       - ./www/html:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --plivicegod@gmail.com --agree-tos --no-eff-email -d js.nvrl.my.id
+    command: certonly --webroot --webroot-path=/var/www/html --email your-plitvicegod@gmail.com --agree-tos --no-eff-email -d js.nvrl.my.id
     depends_on:
       - nginx
 
