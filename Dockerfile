@@ -4,7 +4,7 @@ FROM oven/bun:1 AS builder
 WORKDIR /app
 
 # Salin file package.json dan lock file
-COPY package*.json bun.lockb ./
+COPY package.json bun.lock ./
 RUN bun install
 
 # Salin seluruh proyek
@@ -20,7 +20,7 @@ WORKDIR /app
 
 # Salin hasil build dari stage builder
 COPY --from=builder /app/build ./build
-COPY package*.json ./
+COPY package.json bun.lock ./
 RUN bun install --production
 
 EXPOSE 3000
