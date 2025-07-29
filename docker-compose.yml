@@ -1,45 +1,35 @@
+# File: js-nvrl/docker-compose.yml
+
 version: '3.8'
 
 services:
-  sveltekit:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: sveltekit_app
+    container_name: sveltekit-app
+    restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - PORT=3000
     networks:
-      - app-network
+      - web-network
 
   nginx:
     image: nginx:latest
-    container_name: nginx_proxy
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - certbot-certs:/etc/letsencrypt
-      - ./www/html:/var/www/html
+    container_name: nginx-js-nvrl
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
-    depends_on:
-      - sveltekit
-    networks:
-      - app-network
-
-  certbot:
-    image: certbot/certbot:latest
-    container_name: certbot
     volumes:
-      - certbot-certs:/etc/letsencrypt
-      - ./www/html:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email your-plitvicegod@gmail.com --agree-tos --no-eff-email -d js.nvrl.my.id
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./static:/app/static
     depends_on:
-      - nginx
-
-volumes:
-  certbot-certs:
+      - app
+    networks:
+      - web-network
 
 networks:
-  app-network:
+  web-network:
     driver: bridge
