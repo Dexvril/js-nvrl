@@ -1,7 +1,13 @@
 <script>
-	import '../app.css';
+       // Kode script jika diperlukan
+     </script>
 
-	let { children } = $props();
-</script>
+     <div class="min-h-screen bg-gray-100">
+       <slot />
+     </div>
 
-{@render children()}
+     <style>
+       @tailwind base;
+       @tailwind components;
+       @tailwind utilities;
+     </style>
